@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text_Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>String Manipulation Application</h1>
+
+    <div class="editor-container">
+        <textarea id="textInput" class="input-area"
+            placeholder="Enter your text here...">Lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde distinctio modi quam facere officiis optio totam eaque quo, consequatur quis, perspiciatis debitis est? Magnam omnis beatae unde nihil, odio quae delectus harum quidem voluptate quo?</textarea>
+
+        <div class="button-container">
+            <button class="action-button" onclick="transformText('lowercase')">Lowercase</button>
+            <button class="action-button blue" onclick="transformText('uppercase')">Uppercase</button>
+            <button class="action-button purple" onclick="transformText('capitalize')">Capitalize</button>
+            <button class="action-button orange" onclick="transformText('reverse')">Reverse</button>
+            <button class="action-button red" onclick="transformText('clear')">Clear</button>
+            <button class="action-button teal" onclick="transformText('trim')">Trim Whitespace</button>
+            <button class="action-button" onclick="transformText('removeDuplicates')">Remove Duplicates</button>
+            <button class="action-button blue" onclick="transformText('countWords')">Count Words</button>
+            <button class="action-button purple" onclick="transformText('countChars')">Count Characters</button>
+            <button class="action-button orange" onclick="transformText('camelCase')">camelCase</button>
+            <button class="action-button teal" onclick="transformText('kebabCase')">kebab-case</button>
+            <button class="action-button" onclick="transformText('snakeCase')">snake_case</button>
+            <button class="action-button red" onclick="transformText('shuffle')">Shuffle</button>
+        </div>
+    </div>
+
+    <div class="stats-container">
+        <div class="stats-title">Text Statistics</div>
+        <div id="charCount" class="stats-item">Characters: 0</div>
+        <div id="wordCount" class="stats-item">Words: 0</div>
+        <div id="lineCount" class="stats-item">Lines: 0</div>
+    </div>
+    <script>
+        const textInput = document.getElementById("textInput");
+        const charCount = document.getElementById("charCount");
+        const wordCount = document.getElementById("wordCount");
+        const lineCount = document.getElementById("lineCount");
+
+        textInput.addEventListener('input', updatetext);
+
+        function updatetext() {
+            const text = textInput.value;
+
+            charCount.textContent = `Characters: ${text.length}`;
+
+            function countWords(text) {
+                if (text.trim() === '') {
+                    return 0;
+                }
+                const words = text.trim().split(/\s+/);
+                return words.length;
+            }
+            const wordCountValue = countWords(text);
+            wordCount.textContent = `Words: ${wordCountValue}`;
+
+            function countLines(text) {
+                if (text === '') {
+                    return 0;
+                }
+                const lines = text.split("\n");
+                return lines.length;
+            }
+            const lineCountValue = countLines(text);
+            lineCount.textContent = `Lines: ${lineCountValue}`;
+        }
+        function transformText(operation) {
+            let text = textInput.value;
+
+            switch (operation) {
+                case 'lowercase':
+                    textInput.value = text.toLowerCase();
+                    break;
+                case 'uppercase':
+                    textInput.value = text.toUpperCase();
+                    break;
+                case 'capitalize':
+                    textInput.value = text.split('. ')
+                        .map(sentence => sentence.charAt(0).toUpperCase() + sentence.slice(1).toLowerCase())
+                        .join('. ');
+                    break;
+                case 'reverse':
+                    textInput.value = text.split(' ').reverse().join(' ');
+                    break;
+                case 'clear':
+                    textInput.value = ("")
+                    break;
+                case 'trim':
+                    textInput.value = text.split(/\s+/).join('')
+                    break;
+                case 'removeDuplicates':
+                    textInput.value = [...new Set(text.split(' '))].join(' ')
+                    break;
+                case 'camelCase':
+                    textInput.value = text.toLowerCase().split(' ').map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)).join('');
+                    break;
+                case 'kebabCase':
+                    textInput.value = text.toLowerCase().split(' ').join('-');
+                    break;
+                case 'snakeCase':
+                    textInput.value = text.toLowerCase().split(' ').join('_');
+                    break;
+                case 'shuffle':
+                    textInput.value = text.split('').sort(()=>Math.random()-0.5).join('');
+                    break;
+            }
+            updatetext();
+        }
+
+    </script>
+
+</html>
